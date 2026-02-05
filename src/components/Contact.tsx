@@ -38,13 +38,13 @@
            className="flex flex-wrap justify-center gap-6 mt-12"
          >
            <a
-             href="https://instagram.com/poeticallyfathmah"
+              href="https://instagram.com/fathmahh_"
              target="_blank"
              rel="noopener noreferrer"
              className="flex items-center gap-3 px-8 py-4 bg-card/50 border border-border/50 hover:border-gold/50 hover:bg-gold/5 transition-all duration-300 group"
            >
              <Instagram size={20} className="text-gold group-hover:text-gold" />
-             <span className="font-body text-foreground">@poeticallyfathmah</span>
+              <span className="font-body text-foreground">@fathmahh_</span>
            </a>
  
            <a

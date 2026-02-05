@@ -53,7 +53,7 @@
            className="space-y-2 mt-8"
          >
            <p className="font-body text-lg text-foreground/80">
-             Poet • Writer • Filmmaker
+              Poet • Writer • Filmmaker 🌍
            </p>
            <p className="font-body text-base text-muted-foreground italic">
              "Always in a dress 💗"
