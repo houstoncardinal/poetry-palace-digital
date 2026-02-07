@@ -1,102 +1,165 @@
- import { motion } from "framer-motion";
- import heroBg from "@/assets/hero-bg.jpg";
- 
- const Hero = () => {
-   return (
-     <section className="relative min-h-screen flex items-center justify-center overflow-hidden">
-       {/* Background Image */}
-       <div className="absolute inset-0 z-0">
-         <img
-           src={heroBg}
-           alt="Fathmah - NYC Youth Poet Laureate"
-           className="w-full h-full object-cover object-center"
-         />
-         <div className="absolute inset-0 bg-gradient-hero" />
-       </div>
- 
-       {/* Content */}
-       <div className="relative z-10 text-center px-6 max-w-4xl mx-auto pt-20">
-         <motion.div
-           initial={{ opacity: 0 }}
-           animate={{ opacity: 1 }}
-           transition={{ duration: 1.5 }}
-           className="mb-6"
-         >
-           <span className="inline-block font-body text-sm tracking-[0.3em] uppercase text-gold/80 mb-4">
-             NYC Youth Poet Laureate 2024
-           </span>
-         </motion.div>
- 
-         <motion.h1
-           initial={{ opacity: 0, y: 30 }}
-           animate={{ opacity: 1, y: 0 }}
-           transition={{ duration: 1, delay: 0.3 }}
-           className="font-display text-6xl md:text-8xl lg:text-9xl font-light tracking-wide mb-6 text-gradient-gold"
-         >
-           Fathmah
-         </motion.h1>
- 
-         <motion.p
-           initial={{ opacity: 0, y: 20 }}
-           animate={{ opacity: 1, y: 0 }}
-           transition={{ duration: 1, delay: 0.6 }}
-           className="font-display text-xl md:text-2xl italic text-cream-muted mb-4"
-         >
-           also known as
-           <span className="text-rose ml-2">Stain</span>
-         </motion.p>
- 
-         <motion.div
-           initial={{ opacity: 0, y: 20 }}
-           animate={{ opacity: 1, y: 0 }}
-           transition={{ duration: 1, delay: 0.9 }}
-           className="space-y-2 mt-8"
-         >
-           <p className="font-body text-lg text-foreground/80">
-              Poet • Writer • Filmmaker 🌍
-           </p>
-           <p className="font-body text-base text-muted-foreground italic">
-             "Always in a dress 💗"
-           </p>
-         </motion.div>
- 
-         {/* Decorative Line */}
-         <motion.div
-           initial={{ scaleX: 0 }}
-           animate={{ scaleX: 1 }}
-           transition={{ duration: 1.2, delay: 1.2 }}
-           className="w-32 h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mt-12"
-         />
- 
-         {/* Featured Quote */}
-         <motion.blockquote
-           initial={{ opacity: 0 }}
-           animate={{ opacity: 1 }}
-           transition={{ duration: 1, delay: 1.5 }}
-           className="mt-12 max-w-xl mx-auto"
-         >
-           <p className="font-display text-2xl md:text-3xl italic text-foreground/70 leading-relaxed">
-             "Words are the only vessel
-             <br />
-             that can hold the weight of my world"
-           </p>
-         </motion.blockquote>
- 
-         {/* Scroll Indicator */}
-         <motion.div
-           initial={{ opacity: 0 }}
-           animate={{ opacity: 1 }}
-           transition={{ duration: 1, delay: 2 }}
-           className="absolute bottom-12 left-1/2 -translate-x-1/2"
-         >
-           <div className="flex flex-col items-center gap-2 text-muted-foreground animate-float">
-             <span className="font-body text-xs tracking-widest uppercase">Explore</span>
-             <div className="w-px h-8 bg-gradient-to-b from-gold/50 to-transparent" />
-           </div>
-         </motion.div>
-       </div>
-     </section>
-   );
- };
- 
- export default Hero;
+import { motion, useScroll, useTransform } from "framer-motion";
+import { useRef, useState, useEffect } from "react";
+import heroBg from "@/assets/hero-bg.jpg";
+
+const TypewriterText = ({ text, delay = 0 }: { text: string; delay?: number }) => {
+  const [displayText, setDisplayText] = useState("");
+  const [started, setStarted] = useState(false);
+
+  useEffect(() => {
+    const timer = setTimeout(() => setStarted(true), delay * 1000);
+    return () => clearTimeout(timer);
+  }, [delay]);
+
+  useEffect(() => {
+    if (!started) return;
+    let i = 0;
+    const interval = setInterval(() => {
+      if (i <= text.length) {
+        setDisplayText(text.slice(0, i));
+        i++;
+      } else {
+        clearInterval(interval);
+      }
+    }, 60);
+    return () => clearInterval(interval);
+  }, [started, text]);
+
+  return (
+    <span>
+      {displayText}
+      {started && displayText.length < text.length && (
+        <span className="animate-pulse text-gold">|</span>
+      )}
+    </span>
+  );
+};
+
+const Hero = () => {
+  const ref = useRef<HTMLElement>(null);
+  const { scrollYProgress } = useScroll({
+    target: ref,
+    offset: ["start start", "end start"],
+  });
+
+  const bgY = useTransform(scrollYProgress, [0, 1], ["0%", "30%"]);
+  const textY = useTransform(scrollYProgress, [0, 1], ["0%", "50%"]);
+  const opacity = useTransform(scrollYProgress, [0, 0.8], [1, 0]);
+
+  return (
+    <section ref={ref} className="relative min-h-[110vh] flex items-center justify-center overflow-hidden">
+      {/* Parallax Background Image */}
+      <motion.div className="absolute inset-0 z-0" style={{ y: bgY }}>
+        <img
+          src={heroBg}
+          alt="Abstract artistic background"
+          className="w-full h-[130%] object-cover object-center scale-110"
+        />
+        <div className="absolute inset-0 bg-gradient-hero" />
+        {/* Extra vignette overlay */}
+        <div
+          className="absolute inset-0"
+          style={{
+            background:
+              "radial-gradient(ellipse at center, transparent 40%, hsl(20 15% 8% / 0.8) 100%)",
+          }}
+        />
+      </motion.div>
+
+      {/* Content */}
+      <motion.div
+        className="relative z-10 text-center px-6 max-w-4xl mx-auto pt-20"
+        style={{ y: textY, opacity }}
+      >
+        {/* Laureate badge */}
+        <motion.div
+          initial={{ opacity: 0, scale: 0.9 }}
+          animate={{ opacity: 1, scale: 1 }}
+          transition={{ duration: 1.2 }}
+          className="mb-8"
+        >
+          <span className="inline-block font-body text-xs tracking-[0.4em] uppercase px-6 py-2 border border-gold/30 text-gold/90 backdrop-blur-sm bg-background/20">
+            NYC Youth Poet Laureate 2024
+          </span>
+        </motion.div>
+
+        {/* Name */}
+        <motion.h1
+          initial={{ opacity: 0, y: 40 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1.2, delay: 0.3, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="font-display text-7xl md:text-9xl lg:text-[10rem] font-light tracking-wide mb-2 text-gradient-gold leading-none"
+        >
+          Fathmah
+        </motion.h1>
+
+        {/* Stage Name */}
+        <motion.p
+          initial={{ opacity: 0, y: 20 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 1, delay: 0.7 }}
+          className="font-display text-xl md:text-2xl italic text-cream-muted mb-6"
+        >
+          also known as
+          <span className="text-rose ml-2 not-italic font-medium">Stain</span>
+        </motion.p>
+
+        {/* Typewriter Quote */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 0.5, delay: 1.2 }}
+          className="mt-8 mb-6"
+        >
+          <p className="font-body text-lg md:text-xl text-foreground/70 italic">
+            "<TypewriterText text="Words are the only vessel that can hold the weight of my world" delay={1.5} />"
+          </p>
+        </motion.div>
+
+        {/* Bio Line */}
+        <motion.div
+          initial={{ opacity: 0, y: 15 }}
+          animate={{ opacity: 1, y: 0 }}
+          transition={{ duration: 0.8, delay: 1 }}
+          className="space-y-2 mt-6"
+        >
+          <p className="font-body text-base text-foreground/60">
+            Poet • Writer • Filmmaker 🌍
+          </p>
+          <p className="font-body text-sm text-muted-foreground italic">
+            "Always in a dress 💗"
+          </p>
+        </motion.div>
+
+        {/* Decorative Line */}
+        <motion.div
+          initial={{ scaleX: 0 }}
+          animate={{ scaleX: 1 }}
+          transition={{ duration: 1.5, delay: 1.8, ease: [0.25, 0.46, 0.45, 0.94] }}
+          className="w-48 h-px bg-gradient-to-r from-transparent via-gold to-transparent mx-auto mt-12"
+        />
+
+        {/* Scroll Indicator */}
+        <motion.div
+          initial={{ opacity: 0 }}
+          animate={{ opacity: 1 }}
+          transition={{ duration: 1, delay: 2.5 }}
+          className="mt-16"
+        >
+          <a href="#poetry" className="flex flex-col items-center gap-3 text-muted-foreground hover:text-gold transition-colors duration-500 group">
+            <span className="font-body text-xs tracking-[0.4em] uppercase group-hover:tracking-[0.5em] transition-all duration-500">
+              Enter
+            </span>
+            <motion.div
+              animate={{ y: [0, 8, 0] }}
+              transition={{ duration: 2, repeat: Infinity, ease: "easeInOut" }}
+              className="w-px h-12 bg-gradient-to-b from-gold/60 to-transparent"
+            />
+          </a>
+        </motion.div>
+      </motion.div>
+    </section>
+  );
+};
+
+export default Hero;
