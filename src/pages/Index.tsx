@@ -5,10 +5,12 @@ import About from "@/components/About";
 import Events from "@/components/Events";
 import Contact from "@/components/Contact";
 import Footer from "@/components/Footer";
+import AmbientParticles from "@/components/AmbientParticles";
 
 const Index = () => {
   return (
     <main className="min-h-screen bg-background overflow-x-hidden">
+      <AmbientParticles />
       <Navigation />
       <Hero />
       <PoetryShowcase />
