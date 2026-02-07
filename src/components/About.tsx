@@ -1,5 +1,5 @@
 import { motion } from "framer-motion";
-import { Award, Film, Mic, Pen, Sparkles } from "lucide-react";
+import { Award, Film, Mic, Pen, Sparkles, Heart } from "lucide-react";
 import ScrollRevealText from "./ScrollRevealText";
 
 const achievements = [
@@ -7,31 +7,48 @@ const achievements = [
     icon: Award,
     title: "NYC Youth Poet Laureate",
     description: "2024 Title Holder — Urban Word NYC",
+    accent: "text-gold",
+    glow: "hover:glow-gold",
+    border: "hover:border-gold/30",
+    bg: "bg-gradient-to-br from-gold/5 to-transparent",
   },
   {
     icon: Pen,
     title: "Poet & Writer",
     description: "Exploring identity, diaspora, womanhood, and resilience",
+    accent: "text-rose",
+    glow: "hover:glow-rose",
+    border: "hover:border-rose/30",
+    bg: "bg-gradient-to-br from-rose/5 to-transparent",
   },
   {
     icon: Film,
     title: "Filmmaker",
     description: "Visual storyteller weaving cultural narratives",
+    accent: "text-gold",
+    glow: "hover:glow-gold",
+    border: "hover:border-gold/30",
+    bg: "bg-gradient-to-br from-gold/5 to-transparent",
   },
   {
     icon: Mic,
     title: "Rebel Tongues",
     description: "Curator of a diaspora poetry experience",
+    accent: "text-burgundy-light",
+    glow: "hover:glow-burgundy",
+    border: "hover:border-burgundy-light/30",
+    bg: "bg-gradient-to-br from-burgundy/8 to-transparent",
   },
 ];
 
 const About = () => {
   return (
-    <section id="about" className="py-32 md:py-40 relative overflow-hidden">
-      {/* Decorative Background */}
-      <div className="absolute inset-0 opacity-5 pointer-events-none">
-        <div className="absolute top-0 left-1/4 w-96 h-96 bg-burgundy rounded-full blur-3xl" />
-        <div className="absolute bottom-0 right-1/4 w-80 h-80 bg-gold rounded-full blur-3xl" />
+    <section id="about" className="py-32 md:py-40 relative overflow-hidden bg-gradient-warm">
+      {/* Rich decorative background */}
+      <div className="absolute inset-0 pointer-events-none">
+        <div className="absolute top-0 left-1/4 w-[500px] h-[500px] bg-burgundy/6 rounded-full blur-[150px]" />
+        <div className="absolute bottom-0 right-1/4 w-96 h-96 bg-gold/5 rounded-full blur-[120px]" />
+        <div className="absolute top-1/2 right-0 w-64 h-64 bg-rose/4 rounded-full blur-[100px]" />
       </div>
 
       <div className="max-w-6xl mx-auto px-6 relative z-10">
@@ -47,7 +64,7 @@ const About = () => {
               The Poet
             </span>
             <h2 className="font-display text-4xl md:text-6xl mt-4 mb-10 text-foreground">
-              About <span className="text-gradient-rose">Fathmah</span>
+              About <span className="text-gradient-rose text-shadow-rose">Fathmah</span>
             </h2>
 
             <div className="space-y-6 font-body text-lg leading-relaxed text-foreground/80">
@@ -74,7 +91,8 @@ const About = () => {
               whileInView={{ opacity: 1, x: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.8, delay: 0.4 }}
-              className="mt-12 pl-6 border-l-2 border-gold/40"
+              className="mt-12 pl-6 border-l-2 border-gradient relative"
+              style={{ borderImage: "linear-gradient(180deg, hsl(42 80% 60% / 0.5), hsl(350 45% 35% / 0.3)) 1" }}
             >
               <p className="font-display text-xl italic text-foreground/50">
                 "I write to remember what we were never supposed to forget."
@@ -97,9 +115,9 @@ const About = () => {
                 whileInView={{ opacity: 1, y: 0 }}
                 viewport={{ once: true }}
                 transition={{ duration: 0.6, delay: 0.3 + index * 0.12 }}
-                className="group p-8 bg-card/30 border border-border/30 rounded-sm hover:border-gold/30 hover:glow-gold transition-all duration-500"
+                className={`group p-8 ${achievement.bg} border border-border/30 rounded-sm ${achievement.border} ${achievement.glow} transition-all duration-500`}
               >
-                <achievement.icon className="w-8 h-8 text-gold mb-4 group-hover:scale-110 transition-transform duration-300" strokeWidth={1.5} />
+                <achievement.icon className={`w-8 h-8 ${achievement.accent} mb-4 group-hover:scale-110 transition-transform duration-300`} strokeWidth={1.5} />
                 <h3 className="font-display text-lg text-foreground mb-2 group-hover:text-gold transition-colors duration-300">
                   {achievement.title}
                 </h3>
@@ -109,7 +127,7 @@ const About = () => {
               </motion.div>
             ))}
 
-            {/* Extra element - Instagram CTA */}
+            {/* Instagram CTA */}
             <motion.a
               href="https://instagram.com/poeticallyfathmah"
               target="_blank"
@@ -118,9 +136,11 @@ const About = () => {
               whileInView={{ opacity: 1, y: 0 }}
               viewport={{ once: true }}
               transition={{ duration: 0.6, delay: 0.8 }}
-              className="group sm:col-span-2 p-8 bg-gradient-to-br from-burgundy/15 to-gold/5 border border-burgundy/20 rounded-sm hover:border-gold/30 hover:glow-rose transition-all duration-500 flex items-center gap-4"
+              className="group sm:col-span-2 p-8 bg-gradient-to-br from-burgundy/12 via-rose/5 to-gold/5 border border-burgundy/20 rounded-sm hover:border-gold/30 hover:glow-rose transition-all duration-500 flex items-center gap-4"
             >
-              <Sparkles className="w-6 h-6 text-rose" />
+              <div className="p-2 rounded-full bg-rose/10 group-hover:bg-rose/20 transition-colors duration-300">
+                <Heart className="w-5 h-5 text-rose fill-rose/30 group-hover:fill-rose/50 transition-colors duration-300" />
+              </div>
               <div>
                 <p className="font-display text-lg text-foreground group-hover:text-gold transition-colors">
                   Follow the journey
@@ -129,6 +149,7 @@ const About = () => {
                   @poeticallyfathmah on Instagram
                 </p>
               </div>
+              <Sparkles className="w-5 h-5 text-gold/40 ml-auto opacity-0 group-hover:opacity-100 transition-opacity duration-500" />
             </motion.a>
           </motion.div>
         </div>

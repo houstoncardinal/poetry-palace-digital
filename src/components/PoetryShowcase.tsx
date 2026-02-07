@@ -34,6 +34,7 @@ like an offering to the sky,
 and it becomes light.`,
     theme: "Identity & Diaspora",
     dedication: "for those who carry two worlds",
+    accent: "gold" as const,
   },
   {
     id: 2,
@@ -70,6 +71,7 @@ I am evidence.
 I am here.`,
     theme: "Resilience & Defiance",
     dedication: "for every girl they tried to erase",
+    accent: "burgundy" as const,
   },
   {
     id: 3,
@@ -104,6 +106,7 @@ My mother's hands hold stories.
 And mine—mine hold hers.`,
     theme: "Heritage & Memory",
     dedication: "for umma",
+    accent: "rose" as const,
   },
   {
     id: 4,
@@ -135,6 +138,7 @@ to come in a language they can digest.
 But my tongue is a rebel.
 And it will speak in fire.`,
     theme: "Voice & Resistance",
+    accent: "gold" as const,
   },
   {
     id: 5,
@@ -167,8 +171,33 @@ always, always
 taking up space.`,
     theme: "Womanhood & Self",
     dedication: "always in a dress 💗",
+    accent: "rose" as const,
   },
 ];
+
+const accentStyles = {
+  gold: {
+    bg: "bg-gradient-to-br from-gold/8 via-card/40 to-gold/3",
+    border: "border-gold/20 hover:border-gold/40",
+    badge: "text-gold",
+    glow: "hover:glow-gold",
+    line: "from-gold/30 to-transparent",
+  },
+  burgundy: {
+    bg: "bg-gradient-to-br from-burgundy/12 via-card/40 to-burgundy/5",
+    border: "border-burgundy/20 hover:border-burgundy-light/40",
+    badge: "text-rose",
+    glow: "hover:glow-rose",
+    line: "from-rose/30 to-transparent",
+  },
+  rose: {
+    bg: "bg-gradient-to-br from-rose/6 via-card/40 to-rose/3",
+    border: "border-rose/15 hover:border-rose/35",
+    badge: "text-rose",
+    glow: "hover:glow-rose",
+    line: "from-rose/30 to-transparent",
+  },
+};
 
 const PoetryShowcase = () => {
   const [selectedPoem, setSelectedPoem] = useState<typeof poems[0] | null>(null);
@@ -180,11 +209,12 @@ const PoetryShowcase = () => {
         onClose={() => setSelectedPoem(null)}
       />
 
-      <section id="poetry" className="py-32 md:py-40 bg-gradient-section relative">
-        {/* Atmospheric overlays */}
+      <section id="poetry" className="py-32 md:py-40 bg-gradient-cinematic relative">
+        {/* Rich atmospheric overlays */}
         <div className="absolute inset-0 overflow-hidden pointer-events-none">
-          <div className="absolute top-20 -left-40 w-80 h-80 bg-burgundy/10 rounded-full blur-3xl" />
-          <div className="absolute bottom-20 -right-40 w-96 h-96 bg-gold/5 rounded-full blur-3xl" />
+          <div className="absolute top-20 -left-40 w-96 h-96 bg-burgundy/8 rounded-full blur-[120px]" />
+          <div className="absolute bottom-20 -right-40 w-[500px] h-[500px] bg-gold/5 rounded-full blur-[150px]" />
+          <div className="absolute top-1/2 left-1/2 -translate-x-1/2 -translate-y-1/2 w-[600px] h-[600px] bg-rose/3 rounded-full blur-[200px]" />
         </div>
 
         <div className="max-w-7xl mx-auto px-6 relative z-10">
@@ -207,8 +237,11 @@ const PoetryShowcase = () => {
               whileInView={{ scaleX: 1 }}
               viewport={{ once: true }}
               transition={{ duration: 1, delay: 0.3 }}
-              className="w-32 h-px bg-gradient-to-r from-transparent via-gold/50 to-transparent mx-auto mt-8"
-            />
+              className="w-32 h-px mx-auto mt-8 relative"
+            >
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gold/50 to-transparent" />
+              <div className="absolute inset-0 bg-gradient-to-r from-transparent via-gold/30 to-transparent blur-sm" />
+            </motion.div>
             <p className="font-body text-base text-muted-foreground mt-6 max-w-lg mx-auto italic">
               "I write to remember what we were never supposed to forget."
             </p>
@@ -224,10 +257,11 @@ const PoetryShowcase = () => {
           >
             <div
               onClick={() => setSelectedPoem(poems[1])}
-              className="group cursor-pointer relative p-10 md:p-16 bg-burgundy/10 border border-burgundy/20 rounded-sm hover:border-gold/40 transition-all duration-700 hover:glow-rose overflow-hidden"
+              className="group cursor-pointer relative p-10 md:p-16 bg-gradient-to-br from-burgundy/12 via-burgundy/5 to-gold/5 border border-burgundy/25 rounded-sm hover:border-gold/40 transition-all duration-700 hover:glow-burgundy overflow-hidden"
             >
-              {/* Background accent */}
-              <div className="absolute top-0 right-0 w-1/3 h-full bg-gradient-to-l from-gold/5 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-700" />
+              {/* Background accent shimmer */}
+              <div className="absolute top-0 right-0 w-1/2 h-full bg-gradient-to-l from-gold/5 via-rose/3 to-transparent opacity-0 group-hover:opacity-100 transition-opacity duration-1000" />
+              <div className="absolute bottom-0 left-0 w-1/3 h-1/2 bg-gradient-to-tr from-burgundy/10 to-transparent rounded-full blur-3xl" />
 
               <div className="relative z-10 max-w-3xl">
                 <span className="inline-block font-body text-xs tracking-[0.3em] uppercase text-rose mb-4">
@@ -242,6 +276,7 @@ const PoetryShowcase = () => {
                   </p>
                 </div>
                 <div className="mt-10 flex items-center gap-3">
+                  <div className="w-8 h-px bg-gradient-to-r from-gold to-transparent" />
                   <span className="font-body text-sm text-gold group-hover:tracking-wider transition-all duration-500">
                     Read the full poem
                   </span>
@@ -259,46 +294,55 @@ const PoetryShowcase = () => {
 
           {/* Poetry Grid */}
           <div className="grid md:grid-cols-2 gap-8">
-            {poems.filter((_, i) => i !== 1).map((poem, index) => (
-              <motion.article
-                key={poem.id}
-                initial={{ opacity: 0, y: 30 }}
-                whileInView={{ opacity: 1, y: 0 }}
-                viewport={{ once: true }}
-                transition={{ duration: 0.8, delay: index * 0.15 }}
-                onClick={() => setSelectedPoem(poem)}
-                className="group relative cursor-pointer"
-              >
-                <div className="p-8 md:p-10 bg-card/40 border border-border/40 rounded-sm hover:border-gold/30 transition-all duration-500 hover:glow-rose h-full flex flex-col">
-                  {/* Theme Badge */}
-                  <span className="inline-block font-body text-xs tracking-widest uppercase text-gold-muted mb-4">
-                    {poem.theme}
-                  </span>
+            {poems.filter((_, i) => i !== 1).map((poem, index) => {
+              const style = accentStyles[poem.accent];
+              return (
+                <motion.article
+                  key={poem.id}
+                  initial={{ opacity: 0, y: 30 }}
+                  whileInView={{ opacity: 1, y: 0 }}
+                  viewport={{ once: true }}
+                  transition={{ duration: 0.8, delay: index * 0.15 }}
+                  onClick={() => setSelectedPoem(poem)}
+                  className="group relative cursor-pointer"
+                >
+                  <div className={`p-8 md:p-10 ${style.bg} border ${style.border} rounded-sm transition-all duration-500 ${style.glow} h-full flex flex-col`}>
+                    {/* Subtle top accent line */}
+                    <div className={`absolute top-0 left-8 right-8 h-px bg-gradient-to-r ${style.line} opacity-0 group-hover:opacity-100 transition-opacity duration-500`} />
 
-                  {/* Title */}
-                  <h3 className="font-display text-3xl md:text-4xl text-foreground mb-6 group-hover:text-gold transition-colors duration-300">
-                    {poem.title}
-                  </h3>
-
-                  {/* Excerpt */}
-                  <div className="poetry-quote flex-1">
-                    <p className="font-body text-base leading-relaxed text-foreground/70 whitespace-pre-line">
-                      {poem.excerpt}
-                    </p>
-                  </div>
-
-                  {/* Read More */}
-                  <div className="mt-8 pt-6 border-t border-border/30 flex items-center justify-between">
-                    <span className="font-body text-sm text-muted-foreground group-hover:text-gold transition-colors duration-300">
-                      Read full poem
+                    {/* Theme Badge */}
+                    <span className={`inline-block font-body text-xs tracking-widest uppercase ${style.badge} mb-4`}>
+                      {poem.theme}
                     </span>
-                    <span className="text-gold/0 group-hover:text-gold/80 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
-                      →
-                    </span>
+
+                    {/* Title */}
+                    <h3 className="font-display text-3xl md:text-4xl text-foreground mb-6 group-hover:text-gold transition-colors duration-300">
+                      {poem.title}
+                    </h3>
+
+                    {/* Excerpt */}
+                    <div className="poetry-quote flex-1">
+                      <p className="font-body text-base leading-relaxed text-foreground/70 whitespace-pre-line">
+                        {poem.excerpt}
+                      </p>
+                    </div>
+
+                    {/* Read More */}
+                    <div className="mt-8 pt-6 border-t border-border/20 flex items-center justify-between">
+                      <div className="flex items-center gap-3">
+                        <div className="w-5 h-px bg-gradient-to-r from-gold/50 to-transparent opacity-0 group-hover:opacity-100 transition-all duration-500" />
+                        <span className="font-body text-sm text-muted-foreground group-hover:text-gold transition-colors duration-300">
+                          Read full poem
+                        </span>
+                      </div>
+                      <span className="text-gold/0 group-hover:text-gold/80 transition-all duration-300 transform translate-x-2 group-hover:translate-x-0">
+                        →
+                      </span>
+                    </div>
                   </div>
-                </div>
-              </motion.article>
-            ))}
+                </motion.article>
+              );
+            })}
           </div>
         </div>
       </section>
